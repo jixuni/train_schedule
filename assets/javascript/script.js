@@ -33,6 +33,7 @@ $(document).ready(function(){
         }
         
         database.ref().push(trainData)
+        
         console.log(trainData.trainName);
         console.log(trainData.destination);
         console.log(trainData.trainFrequency);
@@ -46,8 +47,20 @@ $(document).ready(function(){
         // $("#destination").val("");
         // $("#trainFrequency").val("");
         // $("#firstTrainTime").val("");
-        
+    })
 
+    database.ref().on("child_added", function(childSnapshot){
+        console.log(childSnapshot.val());
+
+        var dataName = childSnapshot.val().trainName;
+        var dataDestination = childSnapshot.val().destination;
+        var dataTrainFrequency = childSnapshot.val().trainFrequency;
+        var datafirstTrain = childSnapshot.val().firstTrainTime;
+
+        console.log(dataName);
+        console.log(dataDestination);
+        console.log(dataTrainFrequency);
+        console.log(datafirstTrain);
     })
 
 
