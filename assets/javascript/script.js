@@ -34,11 +34,7 @@ $(document).ready(function(){
         
         database.ref().push(trainData)
         
-        console.log(trainData.trainName);
-        console.log(trainData.destination);
-        console.log(trainData.trainFrequency);
-        console.log(trainData.firstTrainTime);
-        console.log(trainData.timeAdded);
+        
 
         
         var form = document.getElementById("trainForm");
@@ -50,7 +46,7 @@ $(document).ready(function(){
     })
 
     database.ref().on("child_added", function(childSnapshot){
-        console.log(childSnapshot.val());
+        //console.log(childSnapshot.val());
 
         var dataName = childSnapshot.val().trainName;
         var dataDestination = childSnapshot.val().destination;
@@ -61,20 +57,22 @@ $(document).ready(function(){
         console.log(dataDestination);
         console.log(dataTrainFrequency);
         console.log(datafirstTrain);
+        
+        var addRow = $("<tr>").append(
+            $("<td>").text(dataName),
+            $("<td>").text(dataDestination),
+            $("<td>").text(dataTrainFrequency),
+            $("<td>").text(datafirstTrain), 
+        );
+        $("#trainTable > tbody").append(addRow);
+        arrivalTime(dataTrainFrequency)
     })
 
+    function arrivalTime(frenquency){
+        var currentTime = moment();
+        //console.log(currentTime);
+        console.log(moment(currentTime).format("hh:mm"))
+        
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-    
 })
