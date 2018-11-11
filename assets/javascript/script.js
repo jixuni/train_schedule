@@ -1,5 +1,17 @@
 $(document).ready(function(){
 
+    function htmlClock (){
+        var date = new Date();
+        var h = date.getHours();
+        var m = date.getMinutes();
+        var s = date.getSeconds();
+
+        var time = h + ":" + m + ":" + s;
+        $("#clock").html(time);
+    }
+
+    setInterval(htmlClock, 1000);
+
     var config = {
         apiKey: "AIzaSyBv8g5wCqJzpAlBTtdbfXmmY8YPSONmYXE",
         authDomain: "train-schedule-7edde.firebaseapp.com",
@@ -13,9 +25,7 @@ $(document).ready(function(){
     var database = firebase.database();
 
     var trainName, destination, trainFrequency, firstTrainTime = "";
-    // var destination = "";
-    // var trainFrequency ="";
-    // var firstTrainTime ="";
+    
 
     $(".btn").on("click", function(event){
         event.preventDefault();
@@ -33,46 +43,48 @@ $(document).ready(function(){
         }
         
         database.ref().push(trainData)
-        
-        
-
-        
+    
         var form = document.getElementById("trainForm");
         form.reset();
-        // $("#trainName").val("");
-        // $("#destination").val("");
-        // $("#trainFrequency").val("");
-        // $("#firstTrainTime").val("");
     })
 
     database.ref().on("child_added", function(childSnapshot){
-        //console.log(childSnapshot.val());
-
+    
         var dataName = childSnapshot.val().trainName;
+
         var dataDestination = childSnapshot.val().destination;
+
         var dataTrainFrequency = childSnapshot.val().trainFrequency;
+
         var datafirstTrain = childSnapshot.val().firstTrainTime;
 
-        console.log(dataName);
-        console.log(dataDestination);
-        console.log(dataTrainFrequency);
-        console.log(datafirstTrain);
         
+        
+        var currentTime = moment(datafirstTrain, "HH:mm");
+        
+        
+        var timeDiff = moment().diff(currentTime, "minutes");
+        
+        var timeRemainder = timeDiff % dataTrainFrequency;
+        
+
+        var nextTrainMin = dataTrainFrequency - timeRemainder;
+        
+
+        var timeNexttrain = moment().add(nextTrainMin, "minutes");
+        
+
         var addRow = $("<tr>").append(
             $("<td>").text(dataName),
             $("<td>").text(dataDestination),
             $("<td>").text(dataTrainFrequency),
-            $("<td>").text(datafirstTrain), 
+            $("<td>").text(moment(timeNexttrain).format("hh:mm")),
+            $("<td>").text(nextTrainMin),
         );
         $("#trainTable > tbody").append(addRow);
-        arrivalTime(dataTrainFrequency)
-    })
-
-    function arrivalTime(frenquency){
-        var currentTime = moment();
-        //console.log(currentTime);
-        console.log(moment(currentTime).format("hh:mm"))
         
-    }
+        
+        
+    })
 
 })
