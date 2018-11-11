@@ -1,0 +1,13 @@
+body {
+    background-image: url("image1.jpg")
+}
+
+#clock {
+    font-size: 30px;
+    color: white;
+}
+
+
+.jumbotron {
+    background: rgba(226, 209, 209, 0.5);
+}

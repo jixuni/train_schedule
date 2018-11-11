@@ -6,8 +6,16 @@ $(document).ready(function(){
         var m = date.getMinutes();
         var s = date.getSeconds();
 
+       
+        // used ternary instead of doing multiple if statement
+        // adds 0 in front of clock digit for aesthetics 
+        h = (h < 10) ? "0" + h : h;
+        m = (m < 10) ? "0" + m : m;
+        s = (s < 10) ? "0" + s : s;
+        
+
         var time = h + ":" + m + ":" + s;
-        $("#clock").html(time);
+        $("#clock").html("Current time: " + time);
     }
 
     setInterval(htmlClock, 1000);
